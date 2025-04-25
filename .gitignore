@@ -1,0 +1,10 @@
+/venv
+/dist
+__pycache__
+
+.env
+.env.*
+!.env.libertai.example
+!.env.example
+
+.idea
