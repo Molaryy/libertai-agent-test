@@ -1,0 +1,21 @@
+name: "Agent deployment"
+
+on:
+  workflow_call:
+    inputs:
+      redeploy-if-alive:
+        required: true
+        type: boolean
+  push:
+    branches:
+      - "main"
+
+jobs:
+  deploy:
+    name: Agent deployment
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout into the respository
+        uses: actions/checkout@v4
+      - name:
+          
