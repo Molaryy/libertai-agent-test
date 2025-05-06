@@ -1,4 +1,5 @@
 name: "Agent deployment"
+description: "Deploy an agent on Aleph"
 
 on:
   workflow_call:
@@ -17,5 +18,9 @@ jobs:
     steps:
       - name: Checkout into the respository
         uses: actions/checkout@v4
-      - name:
-          
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: 3.13.3
+      - name: Install libertAI CLI
+        run: pip install libertai-client
