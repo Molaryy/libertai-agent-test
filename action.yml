@@ -1,0 +1,45 @@
+name: "LibertAI Agent Deployment"
+description: "Deploy an agent using libertAI"
+author: "LibertAI"
+branding:
+  icon: upload-cloud
+  color: blue
+
+inputs:
+  agent-id:
+    required: true
+    default: ""
+    description: "ID that will be used to deploy the agent"
+  agent-secret:
+    required: true
+    default: ""
+    description: "Secret that will be used to deploy the agent"
+  agent-environment:
+    required: false
+    default: ""
+    description: "If provided, your agent will have access to this environment"
+
+runs:
+  using: composite
+  steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: 3.11
+        cache: 'pip'
+    - name: Install libertAI CLI
+      shell: bash
+      run: pip install libertai-client==0.1.2
+    - name: Initialize and Deploy Agent
+      shell: bash
+      if: ${{ inputs.agent-id != '' }} && ${{ inputs.agent-secret != '' }}
+      run: |
+        echo "LIBERTAI_AGENT_ID=${{ inputs.agent-id }}" > .env.libertai
+        echo "LIBERTAI_AGENT_SECRET=${{ inputs.agent-secret }}" >> .env.libertai
+        if [ -n "${{ inputs.agent-environment }}" ]; then
+          echo "${{ inputs.agent-environment }}" > .env
+        fi
+        zip -r agent.zip ./ -x '*.git*'
+        libertai agent deploy --dependencies-management=poetry --python-version=3.11 --usage-type=fastapi .
