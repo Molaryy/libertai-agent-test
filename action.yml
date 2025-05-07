@@ -53,7 +53,6 @@ runs:
         if [ -n "${{ inputs.agent-environment }}" ]; then
           echo "${{ inputs.agent-environment }}" > .env
         fi
-        zip -r agent.zip ./ -x '*.git*'
         libertai agent deploy \
         --dependencies-management="${{ inputs.dependency-management-tool }}" \
         --python-version="${{ python-version }}" \
