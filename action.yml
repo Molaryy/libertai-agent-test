@@ -14,6 +14,18 @@ inputs:
     required: true
     default: ""
     description: "Secret that will be used to deploy the agent"
+  dependency-management-tool:
+    required: false
+    default: "poetry"
+    description: "Package manager used to handle dependencies"
+  python-version:
+    required: false
+    default: "3.13.3"
+    description: "Version to deploy with"
+  usage-type:
+    required: false
+    default: "fastapi"
+    description: "How the agent is called"
   agent-environment:
     required: false
     default: ""
@@ -42,4 +54,8 @@ runs:
           echo "${{ inputs.agent-environment }}" > .env
         fi
         zip -r agent.zip ./ -x '*.git*'
-        libertai agent deploy --dependencies-management=poetry --python-version=3.11 --usage-type=fastapi .
+        libertai agent deploy \
+        --dependencies-management="${{ inputs.dependency-management-tool }}" \
+        --python-version="${{ python-version }}" \
+        --usage-type="${{ usage-type }}" \
+        .
