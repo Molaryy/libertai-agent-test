@@ -46,7 +46,6 @@ runs:
       run: pip install libertai-client==0.1.2
     - name: Initialize and Deploy Agent
       shell: bash
-      if: ${{ inputs.agent-id != '' }} && ${{ inputs.agent-secret != '' }}
       run: |
         echo "LIBERTAI_AGENT_ID=${{ inputs.agent-id }}" > .env.libertai
         echo "LIBERTAI_AGENT_SECRET=${{ inputs.agent-secret }}" >> .env.libertai
