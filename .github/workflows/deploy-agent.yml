@@ -3,9 +3,18 @@ name: "Agent deployment"
 on:
   workflow_call:
     inputs:
-      redeploy-if-alive:
+      agent-id:
         required: true
-        type: boolean
+        type: string
+        description: "ID that will be used to deploy the agent"
+      agent-secret:
+        required: true
+        type: string
+        description: "Secret that will be used to deploy the agent"
+      agent-environnement:
+        required: false
+        type: string
+        description: "If provided, your agent will have access to this environnement"
   push:
     branches:
       - "main"
@@ -17,14 +26,19 @@ jobs:
     steps:
       - name: Checkout into the respository
         uses: actions/checkout@v4
-      #- name: Cache python dependencies
-      #  uses: actions/cache@v4
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: 3.13.3
+          cache: 'pip'
       - name: Install libertAI CLI
-        run: pip install libertai-client
-      - name: hey
-        run: pip show libertai-client
-        
+        run: pip install libertai-client==0.1.2
+      - name: Init
+        run: |
+          touch .env .env.liertai
+          if [ -n "${{ github.event.inputs.agent-id }}"  ] && [ -n "${{ github.event.inputs.agent-secret }}"  ]
+          then
+            echo "An ID was provided"
+          else
+            echo "An ID wasn't provided"
+          fi
