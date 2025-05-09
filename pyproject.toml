@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "libertai-agent"
-version = "0.1.0"
+version = "0.1.3"
 description = "Template to create a LibertAI agent"
 authors = ["LibertAI team <hello@libertai.io>"]
 readme = "README.md"
