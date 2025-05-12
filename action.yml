@@ -52,7 +52,7 @@ runs:
         cache: 'pip'
 
     - name: Install libertAI CLI
-      run: pip install libertai-client==0.1.3
+      run: pip install libertai-client==0.1.4
       shell: bash
 
     - name: Initialize and Deploy Agent
@@ -67,6 +67,7 @@ runs:
           --dependencies-management="${{ inputs.dependency-management-tool }}" \
           --python-version="${{ inputs.python-version }}" \
           --usage-type="${{ inputs.usage-type }}" \
+          -- format \
           .
         )
         success=$(echo $result | jq .success)
@@ -80,5 +81,6 @@ runs:
         if [ $success == "false" ]
         then
           echo ::error $message $error_log
-        fi 
+          return 1
+        fi
       shell: bash
