@@ -8,10 +8,10 @@ on:
 jobs:
   deploy-agent:
     name: "Agent deployment"
-    runs-on: ubuntu:latest
+    runs-on: ubuntu-latest
     steps:
       - name: "libertai deployment"
-        uses: libertai-agent-test-1
+        uses: Molaryy/libertai-agent-test@v3
         with:
           agent-id: ${{ secrets.AGENT_ID }}
           agent-secret: ${{ secrets.AGENT_SECRET }}
