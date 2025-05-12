@@ -10,11 +10,15 @@ jobs:
     name: "Agent deployment"
     runs-on: ubuntu-latest
     steps:
-      - name: "libertai deployment"
-        uses: Molaryy/libertai-agent-test@v9
-        with:
-          agent-id: ${{ secrets.AGENT_ID }}
-          agent-secret: ${{ secrets.AGENT_SECRET }}
-          dependency-management-tool: "poetry"
-          python-version: 3.13.3
-          usage-type: "fastapi"
+      - name: test
+        run: |
+          echo ::error test
+          return 1
+      # - name: "libertai deployment"
+      #   uses: Molaryy/libertai-agent-test@v9
+      #   with:
+      #     agent-id: ${{ secrets.AGENT_ID }}
+      #     agent-secret: ${{ secrets.AGENT_SECRET }}
+      #     dependency-management-tool: "poetry"
+      #     python-version: 3.13.3
+      #     usage-type: "fastapi"
