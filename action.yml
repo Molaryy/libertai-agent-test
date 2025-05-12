@@ -37,7 +37,7 @@ outputs:
     value: ${{ steps.agent-deployment.outputs.agent-deployment-success }}
   agent-message:
     description: "Message got when trying to deploy your agent using the libertAI's CLI"
-    value: ${{ steps.agent-deployment.outputs.agent-deployment-message }}
+    value: ${{ steps.agent-deployment.outputs.agent_deployment_message }}
 
 runs:
   using: composite
@@ -76,11 +76,12 @@ runs:
         error_log=$(echo $result | jq .error_log)
 
         echo "agent-deployment-success=$success" >> "$GITHUB_OUTPUT"
-        echo "agent-deployment-message=${$message} ${error_log}" >> "$GITHUB_OUTPUT"
+        agent_deployment_message="$message"
 
-        if [ $success == "false" ]
-        then
-          echo ::error $message $error_log
-          return 1
+        if [ "$success" == "false" ] && [ "$error_log" != null ]; then
+            echo "::error $message $error_log"
+            agent_deployment_message="${message} {error_log}"
         fi
+
+        echo "agent_deployment_message=$agent_deployment_message" >> "$GITHUB_OUTPUT"
       shell: bash
