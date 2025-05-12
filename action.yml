@@ -31,10 +31,13 @@ inputs:
     default: ""
     description: "If provided, your agent will have access to this environment"
 
-#outputs:
-#  agent-instance:
-  #    description: "Agent instance url using ipv6 where you'll be able to communicate with"
-  #    value: ${{ steps.agent-deployment.outputs.agent-deployment-url }}
+outputs:
+  agent-deployment-success:
+    description: "Agent sucess status when deployed"
+    value: ${{ steps.agent-deployment.outputs.agent-deployment-success }}
+  agent-message:
+    description: "Message got when trying to deploy your agent using the libertAI's CLI"
+    value: ${{ steps.agent-deployment.outputs.agent-deployment-message }}
 
 runs:
   using: composite
@@ -60,8 +63,22 @@ runs:
         if [ -n "${{ inputs.agent-environment }}" ]; then
           echo "${{ inputs.agent-environment }}" > .env
         fi
-        libertai agent deploy \
-        --dependencies-management="${{ inputs.dependency-management-tool }}" \
-        --python-version="${{ inputs.python-version }}" \
-        --usage-type="${{ inputs.usage-type }}" \
+        result=$(libertai agent deploy \
+          --dependencies-management="${{ inputs.dependency-management-tool }}" \
+          --python-version="${{ inputs.python-version }}" \
+          --usage-type="${{ inputs.usage-type }}" \
+          .
+        )
+        success=$(echo $result | jq .success)
+        message=$(echo $result | jq .message)
+        url=$(echo $result | jq .url)
+        error_log=$(echo $result | jq .error_log)
+
+        echo "agent-deployment-success=$success" >> "$GITHUB_OUTPUT"
+        echo "agent-deployment-message=${$message} ${error_log}" >> "$GITHUB_OUTPUT"
+
+        if [ $success == "false" ]
+        then
+          echo ::error $message $error_log
+        fi 
       shell: bash
