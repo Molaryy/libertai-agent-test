@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: "libertai deployment"
-        uses: Molaryy/libertai-agent-test@v7
+        uses: Molaryy/libertai-agent-test@v8
         with:
           agent-id: ${{ secrets.AGENT_ID }}
           agent-secret: ${{ secrets.AGENT_SECRET }}c
