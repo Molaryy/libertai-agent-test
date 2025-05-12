@@ -59,7 +59,7 @@ runs:
       id: agent-deployment
       run: |
         if [ -z "${{ inputs.agent-id }}" ] || [ -z "${{ inputs.agent-secret }}" ]; then
-          echo ::error "please provide your agent's id and secret in order to deploy it"
+          echo "::error:: please provide your agent's id and secret in order to deploy it"
         fi
         echo "LIBERTAI_AGENT_ID=${{ inputs.agent-id }}" > .env.libertai
         echo "LIBERTAI_AGENT_SECRET=${{ inputs.agent-secret }}" >> .env.libertai
@@ -82,7 +82,7 @@ runs:
         agent_deployment_message="$message"
 
         if [ "$success" == "false" ] && [ -n "$error_log" ] && [ "$error_log" != "null" ]; then
-            echo "::error $message $error_log"
+            echo "::error:: $message $error_log"
             agent_deployment_message="${message} ${error_log}"
         fi
 
