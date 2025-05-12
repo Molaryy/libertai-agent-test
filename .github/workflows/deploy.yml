@@ -12,7 +12,9 @@ jobs:
     steps:
       - name: test
         run: |
-          echo ::error test
+          echo "::error test1"
+          echo "::error:: test2"
+
           return 1
       # - name: "libertai deployment"
       #   uses: Molaryy/libertai-agent-test@v9
