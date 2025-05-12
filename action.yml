@@ -67,7 +67,7 @@ runs:
           --dependencies-management="${{ inputs.dependency-management-tool }}" \
           --python-version="${{ inputs.python-version }}" \
           --usage-type="${{ inputs.usage-type }}" \
-          -- format \
+          --format \
           .
         )
         success=$(echo $result | jq .success)
